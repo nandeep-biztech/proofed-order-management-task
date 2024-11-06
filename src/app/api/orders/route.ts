@@ -3,7 +3,7 @@ import { ListOrderQuerySchema } from "@/schemas/order.schema";
 import { StatusCodes } from "@/utils/status-codes";
 import { formatZodValidationError } from "@/utils/helper";
 import { orders } from "@/_mock/order";
-import { ApiResponseData } from "@/types/order";
+import { IApiResponseData } from "@/types/order";
 
 export async function GET(req: Request) {
   try {
@@ -51,7 +51,7 @@ export async function GET(req: Request) {
         },
       };
 
-    return NextResponse.json<ApiResponseData>(response, { status: StatusCodes.OK });
+    return NextResponse.json<IApiResponseData>(response, { status: StatusCodes.OK });
   } catch (error) {
     console.error("🚀 ~ GET ~ error:", error)
     return NextResponse.json(

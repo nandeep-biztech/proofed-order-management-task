@@ -20,17 +20,17 @@ export interface IOrder{
   status: OrderStatus; // To ensure it matches one of the statuses defined in ORDER_STATUS_LABELS
 };
 
-export interface PaginationType {
+export interface IPagination {
   currentPage: number;
   limit: number;
   totalPages: number;
   totalRecords: number;
 }
 
-export interface ApiResponseData {
+export interface IApiResponseData {
   message: string;
   data: {
     orders: IOrder[];
-    pagination: PaginationType
+    pagination: IPagination
   };
 };

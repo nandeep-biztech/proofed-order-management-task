@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ApiResponseData, IOrder } from "@/types/order";
+import { IApiResponseData, IOrder } from "@/types/order";
 import { useQuery } from "@tanstack/react-query";
 import {
   useReactTable,
@@ -94,7 +94,7 @@ export function DashboardView() {
   const [searchTerm, setSearchTerm] = useState("");
   const searchQuery = useDebounce(searchTerm, 1000);
 
-  const fetchOrders = async (page: number, limit: number, search: string): Promise<ApiResponseData> => {
+  const fetchOrders = async (page: number, limit: number, search: string): Promise<IApiResponseData> => {
     const res = await fetch(`/api/orders?page=${page + 1}&limit=${limit}&search=${search}`);
     if (!res.ok) {
       throw new Error("Failed to fetch orders");
@@ -102,7 +102,7 @@ export function DashboardView() {
     return res.json();
   };
 
-  const { data, error, isLoading } = useQuery<ApiResponseData>({
+  const { data, error, isLoading } = useQuery<IApiResponseData>({
     queryKey: ["orders", clinetPagination.pageIndex, clinetPagination.pageSize, searchQuery],
     queryFn: () => fetchOrders(clinetPagination.pageIndex, clinetPagination.pageSize, searchQuery),
   });
