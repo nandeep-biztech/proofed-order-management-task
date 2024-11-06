@@ -5,6 +5,7 @@ export const ListOrderQuerySchema = zod.object({
   search: zod.string().optional(),
   page: zod
     .string()
+    .optional()
     .transform((val) => (val ? parseFloat(val) : DEFAULT_API_PAGINATION.page))
     .refine((val) => Number.isInteger(val), {
       message: "Page must be an integer",
@@ -14,6 +15,7 @@ export const ListOrderQuerySchema = zod.object({
     }),
   limit: zod
     .string()
+    .optional()
     .transform((val) =>
       val ? parseFloat(val) : DEFAULT_API_PAGINATION.limit
     )

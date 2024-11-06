@@ -1,5 +1,7 @@
+import { DashboardView } from "@/sections/dashboard/view/dashboard-view";
+
+export const metadata = { title: `Dashboard - Order List` };
+
 export default function Home() {
-  return (
-      <h1>Proofed Order Management Task</h1>
-  );
+  return <DashboardView />;
 }
