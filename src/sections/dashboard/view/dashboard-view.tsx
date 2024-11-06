@@ -33,7 +33,7 @@ const SearchWrapper = styled.div`
 const SearchInput = styled.input`
   padding: 8px;
   font-size: 16px;
-  width: 200px;
+  width: 300px;
   border: 1px solid #ddd;
   border-radius: 4px;
 `;
@@ -46,6 +46,9 @@ const StyledTable = styled.table`
 
 const StyledTableHead = styled.thead`
   background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 `;
 
 const StyledTableRow = styled.tr`
@@ -85,17 +88,29 @@ const Button = styled.button`
   }
 `;
 
+const TableContainer = styled.div`
+  max-height: 500px; // Set a fixed height for the scrollable area
+  overflow-y: auto; // Enables vertical scrolling if content overflows
+  margin-bottom: 20px; // Adds space below the table
+`;
+
 export function DashboardView() {
   const [clinetPagination, setClinetPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const searchQuery = useDebounce(searchTerm, 1000);
 
-  const fetchOrders = async (page: number, limit: number, search: string): Promise<IApiResponseData> => {
-    const res = await fetch(`/api/orders?page=${page + 1}&limit=${limit}&search=${search}`);
+  const fetchOrders = async (
+    page: number,
+    limit: number,
+    search: string
+  ): Promise<IApiResponseData> => {
+    const res = await fetch(
+      `/api/orders?page=${page + 1}&limit=${limit}&search=${search}`
+    );
     if (!res.ok) {
       throw new Error("Failed to fetch orders");
     }
@@ -103,8 +118,18 @@ export function DashboardView() {
   };
 
   const { data, error, isLoading } = useQuery<IApiResponseData>({
-    queryKey: ["orders", clinetPagination.pageIndex, clinetPagination.pageSize, searchQuery],
-    queryFn: () => fetchOrders(clinetPagination.pageIndex, clinetPagination.pageSize, searchQuery),
+    queryKey: [
+      "orders",
+      clinetPagination.pageIndex,
+      clinetPagination.pageSize,
+      searchQuery,
+    ],
+    queryFn: () =>
+      fetchOrders(
+        clinetPagination.pageIndex,
+        clinetPagination.pageSize,
+        searchQuery
+      ),
   });
 
   const orders = data?.data?.orders || [];
@@ -165,36 +190,41 @@ export function DashboardView() {
       <SearchWrapper>
         <SearchInput
           type="text"
-          placeholder="Search orders"
+          placeholder="Search Orders By Customer Name"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </SearchWrapper>
 
-      <StyledTable>
-        <StyledTableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <StyledTableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <StyledTableHeader key={header.id}>
-                  {flexRender(header.column.columnDef.header, header.getContext())}
-                </StyledTableHeader>
-              ))}
-            </StyledTableRow>
-          ))}
-        </StyledTableHead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <StyledTableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <StyledTableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </StyledTableCell>
-              ))}
-            </StyledTableRow>
-          ))}
-        </tbody>
-      </StyledTable>
+      <TableContainer>
+        <StyledTable>
+          <StyledTableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <StyledTableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <StyledTableHeader key={header.id}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                  </StyledTableHeader>
+                ))}
+              </StyledTableRow>
+            ))}
+          </StyledTableHead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <StyledTableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <StyledTableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </StyledTableCell>
+                ))}
+              </StyledTableRow>
+            ))}
+          </tbody>
+        </StyledTable>
+      </TableContainer>
 
       {/* Pagination Controls */}
       <StyledPagination>
@@ -223,7 +253,8 @@ export function DashboardView() {
           {">>"}
         </Button>
         <span>
-          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()}
         </span>
         <select
           value={table.getState().pagination.pageSize}
