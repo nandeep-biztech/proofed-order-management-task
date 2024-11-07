@@ -8,7 +8,7 @@ import {
   StyledTableHeader,
   StyledTableRow,
   TableContainer,
-} from "./order-table.styles";
+} from "./styles/order-table.styles";
 import { IOrder } from "@/types/order";
 
 export type OrderTableProps = {

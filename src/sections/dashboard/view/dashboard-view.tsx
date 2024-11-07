@@ -12,7 +12,7 @@ import {
 import dayjs from "dayjs";
 import { useDebounce } from "@/hooks/use-debounce";
 import { OrderTable } from "@/components/order-table";
-import { Container, SearchInput, SearchWrapper, Title } from "@/components/dashboard-view.styles";
+import { Container, SearchInput, SearchWrapper, Title } from "@/components/styles/dashboard-view.styles";
 
 
 export function DashboardView() {
