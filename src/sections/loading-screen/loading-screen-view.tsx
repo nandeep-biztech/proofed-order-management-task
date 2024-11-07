@@ -7,7 +7,7 @@ export const LoadingScreenView = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "98vh",
         fontSize: "2rem",
       }}
     >

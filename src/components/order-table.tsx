@@ -1,6 +1,7 @@
 import { flexRender, Table } from "@tanstack/react-table";
 import {
   Button,
+  StatusBadge,
   StyledPagination,
   StyledTable,
   StyledTableCell,
@@ -9,7 +10,7 @@ import {
   StyledTableRow,
   TableContainer,
 } from "./styles/order-table.styles";
-import { IOrder } from "@/types/order";
+import { IOrder, OrderStatus } from "@/types/order";
 
 export type OrderTableProps = {
   table: Table<IOrder>;
@@ -39,7 +40,11 @@ export function OrderTable({ table }: OrderTableProps) {
               <StyledTableRow key={row.id}>
                 {row.getVisibleCells().map((cell) => (
                   <StyledTableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    {cell.column.id === "status" ? (
+                      <StatusBadge status={cell.getValue<OrderStatus>()} >{cell.getValue<OrderStatus>()}</StatusBadge>
+                    ) : (
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
                   </StyledTableCell>
                 ))}
               </StyledTableRow>

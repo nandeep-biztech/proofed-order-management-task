@@ -12,9 +12,13 @@ import {
 import dayjs from "dayjs";
 import { useDebounce } from "@/hooks/use-debounce";
 import { OrderTable } from "@/components/order-table";
-import { Container, SearchInput, SearchWrapper, Title } from "@/components/styles/dashboard-view.styles";
+import {
+  Container,
+  SearchInput,
+  SearchWrapper,
+  Title,
+} from "@/components/styles/dashboard-view.styles";
 import Loading from "@/app/loading";
-
 
 export function DashboardView() {
   const [clinetPagination, setClinetPagination] = useState({
@@ -80,7 +84,10 @@ export function DashboardView() {
         header: "Time Remaining",
         cell: ({ getValue }) => calculateTimeRemaining(getValue<string>()),
       },
-      { accessorKey: "status", header: "Status" },
+      {
+        accessorKey: "status",
+        header: "Status",
+      },
     ],
     []
   );
@@ -102,7 +109,7 @@ export function DashboardView() {
     setClinetPagination((prev) => ({ ...prev, pageIndex: 0 }));
   }, [searchQuery]);
 
-  if (isLoading) return <Loading/>;
+  if (isLoading) return <Loading />;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   return (
@@ -118,8 +125,7 @@ export function DashboardView() {
         />
       </SearchWrapper>
 
-      <OrderTable  table={table} />
-      
+      <OrderTable table={table} />
     </Container>
   );
 }
