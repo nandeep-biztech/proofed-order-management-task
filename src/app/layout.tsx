@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { QueryClientWrapper } from "@/provider/query-client.provider";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata: Metadata = {
   title: "Proofed Task",
@@ -17,9 +19,11 @@ export default function RootLayout({
       <body
         className={`antialiased`}
       >
+        <Suspense fallback={<Loading />}>
          <QueryClientWrapper>
           {children}
          </QueryClientWrapper>
+        </Suspense>
       </body>
     </html>
   );
