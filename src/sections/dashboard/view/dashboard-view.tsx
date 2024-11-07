@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { IApiResponseData, IOrder } from "@/types/order";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -9,90 +8,12 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   ColumnDef,
-  flexRender,
 } from "@tanstack/react-table";
 import dayjs from "dayjs";
 import { useDebounce } from "@/hooks/use-debounce";
+import { OrderTable } from "@/components/order-table";
+import { Container, SearchInput, SearchWrapper, Title } from "@/components/dashboard-view.styles";
 
-// Styled components for table, pagination, and search bar
-const Container = styled.div`
-  padding: 20px;
-`;
-
-const Title = styled.h2`
-  font-size: 24px;
-  margin-bottom: 20px;
-`;
-
-const SearchWrapper = styled.div`
-  margin-bottom: 20px;
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const SearchInput = styled.input`
-  padding: 8px;
-  font-size: 16px;
-  width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-`;
-
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  font-family: Arial, sans-serif;
-`;
-
-const StyledTableHead = styled.thead`
-  background-color: #f2f2f2;
-  position: sticky;
-  top: 0;
-  z-index: 1;
-`;
-
-const StyledTableRow = styled.tr`
-  &:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-`;
-
-const StyledTableHeader = styled.th`
-  padding: 12px;
-  text-align: left;
-  border: 1px solid #ddd;
-`;
-
-const StyledTableCell = styled.td`
-  padding: 12px;
-  border: 1px solid #ddd;
-`;
-
-const StyledPagination = styled.div`
-  margin-top: 16px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: flex-end;
-`;
-
-const Button = styled.button`
-  padding: 6px 12px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  background-color: #fff;
-  cursor: pointer;
-  &:disabled {
-    cursor: not-allowed;
-    background-color: #f0f0f0;
-  }
-`;
-
-const TableContainer = styled.div`
-  max-height: 500px; // Set a fixed height for the scrollable area
-  overflow-y: auto; // Enables vertical scrolling if content overflows
-  margin-bottom: 20px; // Adds space below the table
-`;
 
 export function DashboardView() {
   const [clinetPagination, setClinetPagination] = useState({
@@ -196,77 +117,8 @@ export function DashboardView() {
         />
       </SearchWrapper>
 
-      <TableContainer>
-        <StyledTable>
-          <StyledTableHead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <StyledTableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <StyledTableHeader key={header.id}>
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                  </StyledTableHeader>
-                ))}
-              </StyledTableRow>
-            ))}
-          </StyledTableHead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <StyledTableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <StyledTableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </StyledTableCell>
-                ))}
-              </StyledTableRow>
-            ))}
-          </tbody>
-        </StyledTable>
-      </TableContainer>
-
-      {/* Pagination Controls */}
-      <StyledPagination>
-        <Button
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<<"}
-        </Button>
-        <Button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </Button>
-        <Button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </Button>
-        <Button
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
-        >
-          {">>"}
-        </Button>
-        <span>
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
-        </span>
-        <select
-          value={table.getState().pagination.pageSize}
-          onChange={(e) => table.setPageSize(Number(e.target.value))}
-        >
-          {[10, 20, 30, 50, 100].map((pageSize) => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-      </StyledPagination>
+      <OrderTable table={table} />
+      
     </Container>
   );
 }
