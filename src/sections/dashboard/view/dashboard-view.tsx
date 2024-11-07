@@ -13,6 +13,7 @@ import dayjs from "dayjs";
 import { useDebounce } from "@/hooks/use-debounce";
 import { OrderTable } from "@/components/order-table";
 import { Container, SearchInput, SearchWrapper, Title } from "@/components/styles/dashboard-view.styles";
+import Loading from "@/app/loading";
 
 
 export function DashboardView() {
@@ -101,7 +102,7 @@ export function DashboardView() {
     setClinetPagination((prev) => ({ ...prev, pageIndex: 0 }));
   }, [searchQuery]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading/>;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   return (
@@ -117,7 +118,7 @@ export function DashboardView() {
         />
       </SearchWrapper>
 
-      <OrderTable table={table} />
+      <OrderTable  table={table} />
       
     </Container>
   );
